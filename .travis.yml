@@ -1,0 +1,23 @@
+language: bash
+services: docker
+
+env:
+  - version=2.0 variant=alpine
+  - version=2.1 variant=alpine
+  - version=2.2 variant=alpine
+  - version=2.3 variant=alpine
+  - version=2.4 variant=alpine
+
+before_script:
+  - env | sort
+  - cd "$version/$variant"
+  - image="eclecticiq/molecule:$version"
+
+script:
+  - travis_retry docker build -t "$image" .
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push $image;
+    fi
