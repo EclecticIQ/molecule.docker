@@ -7,6 +7,3 @@ RUN apk --no-cache --update add --virtual .deps \
   python2-dev \
   && pip install molecule \
   && apk del .deps
-
-ENTRYPOINT ["molecule"]
-CMD ["--help"]
